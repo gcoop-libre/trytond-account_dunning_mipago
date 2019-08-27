@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains
+     the full copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="ir.ui.view" id="dunning_level_view_form">
+            <field name="model">account.dunning.level</field>
+            <field name="inherit"
+                ref="account_dunning.dunning_level_view_form"/>
+            <field name="name">dunning_level_form</field>
+        </record>
+        <record model="ir.ui.view" id="dunning_level_view_list">
+            <field name="model">account.dunning.level</field>
+            <field name="inherit"
+                ref="account_dunning.dunning_level_view_list"/>
+            <field name="name">dunning_level_list</field>
+        </record>
+        <record model="ir.ui.view" id="dunning_level_view_list_sequence">
+            <field name="model">account.dunning.level</field>
+            <field name="inherit"
+                ref="account_dunning.dunning_level_view_list_sequence"/>
+            <field name="name">dunning_level_list</field>
+        </record>
+
+        <record model="ir.action.report" id="report_mipago">
+            <field name="name">Dunning MiPago</field>
+            <field name="model">account.dunning</field>
+            <field name="report_name">account.dunning.mipago</field>
+            <field name="report">account_dunning_mipago/operaciones.txt</field>
+            <field name="template_extension">txt</field>
+        </record>
+    </data>
+</tryton>
