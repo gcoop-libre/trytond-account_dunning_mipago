@@ -1,17 +1,16 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
+import unicodedata
 from dateutil.relativedelta import relativedelta
 from decimal import Decimal
 
-from trytond.model import fields
+from trytond.model import ModelView, fields
 from trytond.pool import PoolMeta
-from trytond.wizard import StateReport
+from trytond.wizard import Wizard, StateView, StateReport, Button
 from trytond.report import Report
 from trytond.pool import Pool
 from trytond.transaction import Transaction
 from trytond.tools import grouped_slice
-
-__all__ = ['Level', 'ProcessDunning', 'MiPago']
 
 
 class Level(metaclass=PoolMeta):
@@ -46,7 +45,6 @@ class ProcessDunning(metaclass=PoolMeta):
     def transition_mipago(self):
         return self.next_state('mipago')
 
-
 class MiPago(Report):
     'Dunning MiPago'
     __name__ = 'account.dunning.mipago'
@@ -80,3 +78,64 @@ class MiPago(Report):
         context['format_decimal'] = format_decimal
         context['strip_accents'] = strip_accents
         return context
+
+
+class MiPagoCustomerWizardStart(ModelView):
+    'Dunning MiPago Customer'
+    __name__ = 'account.dunning.mipago.customer_wizard.start'
+
+
+class MiPagoCustomerWizard(Wizard):
+    'Dunning MiPago Customer'
+    __name__ = 'account.dunning.mipago.customer_wizard'
+    start = StateView('account.dunning.mipago.customer_wizard.start',
+        'account_dunning_mipago.mipago_customer_start_view_form', [
+            Button('Cancel', 'end', 'tryton-cancel'),
+            Button('Process', 'customer', 'tryton-ok', default=True),
+        ])
+    customer = StateReport('account.dunning.mipago.customer_report')
+
+    def do_customer(self, action):
+        pool = Pool()
+        Dunning = pool.get('account.dunning')
+        dunnings = Dunning.search([])
+        ids = list(set([d.party.id for d in dunnings
+            if not d.blocked
+            and d.party
+            and d.level.mipago]))
+        if ids:
+            return action, {
+                'id': ids[0],
+                'ids': ids,
+                }
+
+
+class MiPagoCustomerReport(Report):
+    'Customers to Dunning MiPago'
+    __name__ = 'account.dunning.mipago.customer_report'
+
+    @classmethod
+    def get_context(cls, records, data):
+
+        def strip_accents(s):
+            return ''.join(c for c in unicodedata.normalize('NFD', s)
+                if unicodedata.category(c) != 'Mn')
+
+        context = super(MiPagoCustomerReport, cls).get_context(records, data)
+        pool = Pool()
+        Party = pool.get('party.party')
+        parties = Party.browse(data['ids'])
+        context['records'] = parties
+        context['strip_accents'] = strip_accents
+        context['_get_address'] = cls._get_address
+        return context
+
+    @classmethod
+    def _get_address(cls, record):
+        pool = Pool()
+        Party = pool.get('party.party')
+        if Party and isinstance(record, Party):
+            contact = record.contact_mechanism_get(
+                'email', usage='invoice')
+            if contact and contact.email:
+                return contact.email

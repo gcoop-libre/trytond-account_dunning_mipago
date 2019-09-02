@@ -10,10 +10,13 @@ __all__ = ['register']
 def register():
     Pool.register(
         dunning.Level,
+        dunning.MiPagoCustomerWizardStart,
         module='account_dunning_mipago', type_='model')
     Pool.register(
         dunning.ProcessDunning,
+        dunning.MiPagoCustomerWizard,
         module='account_dunning_mipago', type_='wizard')
     Pool.register(
         dunning.MiPago,
+        dunning.MiPagoCustomerReport,
         module='account_dunning_mipago', type_='report')

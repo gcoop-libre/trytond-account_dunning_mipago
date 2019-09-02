@@ -6,6 +6,34 @@ msgctxt "field:account.dunning.level,mipago:"
 msgid "MiPago"
 msgstr "MiPago"
 
+msgctxt "field:account.dunning.mipago.customer_wizard.start,id:"
+msgid "ID"
+msgstr "Identificador"
+
+msgctxt "model:account.dunning.mipago.customer_wizard.start,name:"
+msgid "Dunning MiPago Customer"
+msgstr "Reclamaciones de clientes MiPago"
+
 msgctxt "model:ir.action,name:report_mipago"
 msgid "Dunning MiPago"
-msgstr ""
+msgstr "Reclamaciones MiPago"
+
+msgctxt "model:ir.action,name:report_mipago_customer"
+msgid "Dunning MiPago Customers"
+msgstr "Reclamaciones de clientes MiPago"
+
+msgctxt "model:ir.action,name:wizard_dunning_mipago_customer"
+msgid "Dunning MiPago Customers"
+msgstr "Reclamaciones de clientes MiPago"
+
+msgctxt "model:ir.ui.menu,name:menu_dunning_mipago_customer"
+msgid "Dunning MiPago Customers"
+msgstr "Reclamaciones de clientes MiPago"
+
+msgctxt "wizard_button:account.dunning.mipago.customer_wizard,start,customer:"
+msgid "Process"
+msgstr "Procesar"
+
+msgctxt "wizard_button:account.dunning.mipago.customer_wizard,start,end:"
+msgid "Cancel"
+msgstr "Cancelar"

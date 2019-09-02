@@ -22,6 +22,12 @@
             <field name="name">dunning_level_list</field>
         </record>
 
+        <record model="ir.ui.view" id="mipago_customer_start_view_form">
+            <field name="model">account.dunning.mipago.customer_wizard.start</field>
+            <field name="type">form</field>
+            <field name="name">mipago_customer_start_form</field>
+        </record>
+
         <record model="ir.action.report" id="report_mipago">
             <field name="name">Dunning MiPago</field>
             <field name="model">account.dunning</field>
@@ -29,5 +35,21 @@
             <field name="report">account_dunning_mipago/operaciones.txt</field>
             <field name="template_extension">txt</field>
         </record>
+
+        <record model="ir.action.report" id="report_mipago_customer">
+            <field name="name">Dunning MiPago Customers</field>
+            <field name="report_name">account.dunning.mipago.customer_report</field>
+            <field name="report">account_dunning_mipago/customers.txt</field>
+            <field name="template_extension">txt</field>
+        </record>
+
+        <record model="ir.action.wizard" id="wizard_dunning_mipago_customer">
+            <field name="name">Dunning MiPago Customers</field>
+            <field name="wiz_name">account.dunning.mipago.customer_wizard</field>
+        </record>
+        <menuitem parent="account_dunning.menu_dunnings"
+            sequence="20"
+            action="wizard_dunning_mipago_customer"
+            id="menu_dunning_mipago_customer"/>
     </data>
 </tryton>
