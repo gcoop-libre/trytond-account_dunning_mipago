@@ -73,7 +73,7 @@ setup(name=name,
         ),
     package_data={
         'trytond.modules.account_dunning_mipago': (info.get('xml', [])
-            + ['tryton.cfg', 'view/*.xml', 'locale/*.po', '*.html',
+            + ['tryton.cfg', 'view/*.xml', 'locale/*.po', '*.html', '*.txt',
                 'icons/*.svg', 'tests/*.rst']),
         },
     classifiers=[
