@@ -1,3 +1,3 @@
 {% for record in records %}\
-${record.company.party.tax_identifier.code if record.company.party.tax_identifier and record.company.party.tax_identifier.code else ''},${record.party.code if record.party.code else ''},${record.line.description}::${record.line.move.id},,${format_decimal(record.amount)},${maturity_date},,
+${record.company.party.tax_identifier.code if record.company.party.tax_identifier and record.company.party.tax_identifier.code else ''},${record.party.code if record.party.code else ''},"${strip_accents(record.line.description)}::${record.line.move.id}",,${format_decimal(record.amount)},${maturity_date},,
 {% end %}\
