@@ -5,26 +5,26 @@ from dateutil.relativedelta import relativedelta
 from decimal import Decimal
 
 from trytond.model import ModelView, fields
-from trytond.pool import PoolMeta
 from trytond.wizard import Wizard, StateView, StateReport, Button
 from trytond.report import Report
-from trytond.pool import Pool
+from trytond.pool import PoolMeta, Pool
 from trytond.transaction import Transaction
-from trytond.tools import grouped_slice
 
 
 class Level(metaclass=PoolMeta):
     __name__ = 'account.dunning.level'
+
     mipago = fields.Boolean("MiPago")
 
 
 class ProcessDunning(metaclass=PoolMeta):
     __name__ = 'account.dunning.process'
+
     mipago = StateReport('account.dunning.mipago')
 
     @classmethod
     def __setup__(cls):
-        super(ProcessDunning, cls).__setup__()
+        super().__setup__()
         cls._actions.append('mipago')
 
     def do_mipago(self, action):
@@ -45,6 +45,7 @@ class ProcessDunning(metaclass=PoolMeta):
     def transition_mipago(self):
         return self.next_state('mipago')
 
+
 class MiPago(Report):
     'Dunning MiPago'
     __name__ = 'account.dunning.mipago'
@@ -60,8 +61,9 @@ class MiPago(Report):
                 sign = 'N' if n < 0 else ''
             return sign + ('{0:.2f}'.format(abs(n)))
 
-
         def strip_accents(s):
+            if not s:
+                return ''
             return ''.join(c for c in unicodedata.normalize('NFD', s)
                 if unicodedata.category(c) != 'Mn')
 
@@ -88,6 +90,7 @@ class MiPagoCustomerWizardStart(ModelView):
 class MiPagoCustomerWizard(Wizard):
     'Dunning MiPago Customer'
     __name__ = 'account.dunning.mipago.customer_wizard'
+
     start = StateView('account.dunning.mipago.customer_wizard.start',
         'account_dunning_mipago.mipago_customer_start_view_form', [
             Button('Cancel', 'end', 'tryton-cancel'),
@@ -118,6 +121,8 @@ class MiPagoCustomerReport(Report):
     def get_context(cls, records, data):
 
         def strip_accents(s):
+            if not s:
+                return ''
             return ''.join(c for c in unicodedata.normalize('NFD', s)
                 if unicodedata.category(c) != 'Mn')
 
