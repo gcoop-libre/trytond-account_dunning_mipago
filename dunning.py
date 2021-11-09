@@ -51,7 +51,7 @@ class MiPago(Report):
     __name__ = 'account.dunning.mipago'
 
     @classmethod
-    def get_context(cls, records, data):
+    def get_context(cls, records, header, data):
 
         def format_decimal(n, include_sign=False):
             if not isinstance(n, Decimal):
@@ -67,7 +67,7 @@ class MiPago(Report):
             return ''.join(c for c in unicodedata.normalize('NFD', s)
                 if unicodedata.category(c) != 'Mn')
 
-        context = super(MiPago, cls).get_context(records, data)
+        context = super().get_context(records, header, data)
         pool = Pool()
         Date = pool.get('ir.date')
 
@@ -118,7 +118,7 @@ class MiPagoCustomerReport(Report):
     __name__ = 'account.dunning.mipago.customer_report'
 
     @classmethod
-    def get_context(cls, records, data):
+    def get_context(cls, records, header, data):
 
         def strip_accents(s):
             if not s:
@@ -126,7 +126,7 @@ class MiPagoCustomerReport(Report):
             return ''.join(c for c in unicodedata.normalize('NFD', s)
                 if unicodedata.category(c) != 'Mn')
 
-        context = super(MiPagoCustomerReport, cls).get_context(records, data)
+        context = super().get_context(records, header, data)
         pool = Pool()
         Party = pool.get('party.party')
         parties = Party.browse(data['ids'])
