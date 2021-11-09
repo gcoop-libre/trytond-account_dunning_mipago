@@ -6,10 +6,6 @@ msgctxt "field:account.dunning.level,mipago:"
 msgid "MiPago"
 msgstr "MiPago"
 
-msgctxt "field:account.dunning.mipago.customer_wizard.start,id:"
-msgid "ID"
-msgstr "Identificador"
-
 msgctxt "model:account.dunning.mipago.customer_wizard.start,name:"
 msgid "Dunning MiPago Customer"
 msgstr "Reclamaciones de clientes MiPago"
